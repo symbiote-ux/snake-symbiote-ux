@@ -115,17 +115,19 @@ const initSnake = () => {
   return new Snake(snakePosition, new Direction(EAST), 'snake');
 };
 
+const initGhostSnake = () => {
+  const ghostSnakePos = [
+    [40, 30],
+    [41, 30],
+    [42, 30]
+  ];
+
+  return new Snake(ghostSnakePos, new Direction(EAST), 'ghost');
+};
+
 const main = function() {
   const snake = initSnake();
-  const ghostSnake = new Snake(
-    [
-      [40, 30],
-      [41, 30],
-      [42, 30]
-    ],
-    new Direction(SOUTH),
-    'ghost'
-  );
+  const ghostSnake = initGhostSnake();
 
   attachEventListeners(snake);
   createGrids();
