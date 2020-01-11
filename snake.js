@@ -62,6 +62,14 @@ class Food {
   }
 }
 
+class GameController {
+  constructor(snake, ghostSnake, food) {
+    this.snake = snake;
+    this.ghostSnake = ghostSnake;
+    this.food = food;
+  }
+}
+
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
@@ -122,6 +130,13 @@ const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
 
+const initializeSetup = game => {
+  attachEventListeners(game.snake);
+  createGrids();
+  drawSnake(game.snake);
+  drawSnake(game.ghostSnake);
+};
+
 const initGhostSnake = () => {
   const ghostSnakePos = [
     [40, 30],
@@ -146,10 +161,8 @@ const main = function() {
   const ghostSnake = initGhostSnake();
   const food = new Food(2, 3);
 
-  attachEventListeners(snake);
-  createGrids();
-  drawSnake(snake);
-  drawSnake(ghostSnake);
+  const game = new GameController(snake, ghostSnake, food);
+  initializeSetup(game);
   drawFood(food);
 
   setInterval(() => {
