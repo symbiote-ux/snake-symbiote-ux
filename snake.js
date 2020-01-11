@@ -106,17 +106,17 @@ const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
 
-const main = function() {
-  const snake = new Snake(
-    [
-      [40, 25],
-      [41, 25],
-      [42, 25]
-    ],
-    new Direction(EAST),
-    'snake'
-  );
+const initSnake = () => {
+  const snakePosition = [
+    [40, 25],
+    [41, 25],
+    [42, 25]
+  ];
+  return new Snake(snakePosition, new Direction(EAST), 'snake');
+};
 
+const main = function() {
+  const snake = initSnake();
   const ghostSnake = new Snake(
     [
       [40, 30],
