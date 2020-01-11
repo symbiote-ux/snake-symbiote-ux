@@ -97,6 +97,11 @@ const createGrids = function() {
   }
 };
 
+const mobilizeSnakes = (snake, ghostSnake) => {
+  moveAndDrawSnake(snake);
+  moveAndDrawSnake(ghostSnake);
+};
+
 const drawFood = food => {
   const [colId, cellId] = food.position;
   const cell = getCell(colId, cellId);
@@ -166,8 +171,7 @@ const main = function() {
   drawFood(food);
 
   setInterval(() => {
-    moveAndDrawSnake(snake);
-    moveAndDrawSnake(ghostSnake);
+    mobilizeSnakes(snake, ghostSnake);
   }, 200);
 
   setInterval(() => {
