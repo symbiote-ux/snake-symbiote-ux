@@ -25,6 +25,11 @@ const createGrids = function() {
   }
 };
 
+const displayScore = score => {
+  const scoreTable = document.getElementById('scoreTab');
+  scoreText.innerText = 'total : ' + score.total;
+};
+
 const drawFood = food => {
   const [colId, cellId] = food.position;
   const cell = getCell(colId, cellId);
@@ -75,25 +80,22 @@ class GameController {
     this.ghostSnake = ghostSnake;
     this.food = food;
     this.previousFood = new Food(0, 0);
+    this.score = new Score();
   }
-
   get isFoodIngested() {
     const [foodX, foodY] = this.food.position;
     const [snakeX, snakeY] = this.snake.head;
     return foodX == snakeX && foodY == snakeY;
   }
-
   makeNewFood() {
     const foodColId = Math.floor(Math.random() * NUM_OF_COLS);
     const foodCellId = Math.floor(Math.random() * NUM_OF_ROWS);
     this.previousFood = this.food;
     this.food = new Food(foodColId, foodCellId);
   }
-
   turnSnake() {
     this.snake.turnLeft();
   }
-
   getDetails() {
     const details = {};
     details.snake = this.snake;
@@ -102,16 +104,16 @@ class GameController {
     details.previousFood = this.previousFood;
     return details;
   }
-
   update() {
     this.snake.move();
     this.ghostSnake.move();
     if (this.isFoodIngested) {
       this.makeNewFood();
       this.snake.grow();
+      this.score.count(1);
     }
+    displayScore(this.score);
   }
-
   randomlyTurnSnake() {
     let x = Math.random() * 100;
     if (x > 50) {
