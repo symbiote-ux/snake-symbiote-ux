@@ -1,5 +1,4 @@
 'use strict';
-
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 const GRID_ID = 'grid';
@@ -109,6 +108,7 @@ class GameController {
     this.ghostSnake.move();
     if (this.isFoodIngested) {
       this.makeNewFood();
+      this.snake.grow();
     }
   }
 

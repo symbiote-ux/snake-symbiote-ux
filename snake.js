@@ -31,4 +31,7 @@ class Snake {
     details.previousTail = this.previousTail.slice();
     return details;
   }
+  grow() {
+    this.positions.unshift(this.previousTail);
+  }
 }
