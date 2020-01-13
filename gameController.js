@@ -112,10 +112,12 @@ const main = function() {
   const game = new Game(snake, ghostSnake, food);
   initializeSetup(game);
 
-  setInterval(() => {
+  const interval = setInterval(() => {
     game.update();
     if (game.isOver()) {
+      clearInterval(interval);
       alert('Game Over');
+      return;
     }
     drawGame(game);
   }, 200);
