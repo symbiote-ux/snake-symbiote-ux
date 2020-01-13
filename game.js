@@ -29,6 +29,26 @@ class Game {
     details.previousFood = this.previousFood;
     return details;
   }
+  isOnUpperBorder() {
+    const topRow = -1;
+    return this.snake.head[1] == topRow;
+  }
+  isOnLowerBorder() {
+    return this.snake.head[1] == NUM_OF_ROWS;
+  }
+  isOnLeftBorder() {
+    const firstCol = -1;
+    return this.snake.head[0] == firstCol;
+  }
+  isOnRightBorder() {
+    return this.snake.head[0] == NUM_OF_COLS;
+  }
+  hasTouchedBorder() {
+    const isOnRow = this.isOnUpperBorder() || this.isOnLeftBorder();
+    const isOnCol = this.isOnRightBorder() || this.isOnLowerBorder();
+    return isOnRow || isOnCol;
+  }
+
   update() {
     this.snake.move();
     this.ghostSnake.move();
@@ -38,6 +58,9 @@ class Game {
       this.score.count(1);
     }
     displayScore(this.score);
+  }
+  isOver() {
+    return this.hasTouchedBorder();
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;

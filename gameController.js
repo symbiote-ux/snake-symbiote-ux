@@ -114,6 +114,9 @@ const main = function() {
 
   setInterval(() => {
     game.update();
+    if (game.isOver()) {
+      alert('Game Over');
+    }
     drawGame(game);
   }, 200);
   setInterval(() => game.randomlyTurnSnake(), 500);
