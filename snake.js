@@ -17,7 +17,6 @@ class Snake {
   turnLeft() {
     this.direction.turnLeft();
   }
-
   move() {
     const [headX, headY] = this.head;
     this.previousTail = this.positions.shift();
@@ -35,5 +34,13 @@ class Snake {
   }
   grow() {
     this.positions.unshift(this.previousTail);
+  }
+  isOnRow(row) {
+    const [, snakeLiveRow] = this.head;
+    return snakeLiveRow == row;
+  }
+  isOnCol(col) {
+    const [snakeLiveCol] = this.head;
+    return snakeLiveCol == col;
   }
 }

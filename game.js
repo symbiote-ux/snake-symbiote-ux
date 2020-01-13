@@ -34,25 +34,16 @@ class Game {
     details.previousFood = this.previousFood;
     return details;
   }
-  isOnUpperBorder() {
-    const topRow = -1;
-    return this.snake.head[1] == topRow;
+  hasTouchedBorder(snake) {
+    const isOnUpperBorder = snake.isOnRow(-1);
+    const isOnLowerBorder = snake.isOnRow(NUM_OF_ROWS);
+    const isOnLeftBorder = snake.isOnCol(-1);
+    const isOnRightBorder = snake.isOnCol(NUM_OF_COLS);
+    return (
+      isOnUpperBorder || isOnLowerBorder || isOnLeftBorder || isOnRightBorder
+    );
   }
-  isOnLowerBorder() {
-    return this.snake.head[1] == NUM_OF_ROWS;
-  }
-  isOnLeftBorder() {
-    const firstCol = -1;
-    return this.snake.head[0] == firstCol;
-  }
-  isOnRightBorder() {
-    return this.snake.head[0] == NUM_OF_COLS;
-  }
-  hasTouchedBorder() {
-    const isOnRow = this.isOnUpperBorder() || this.isOnLeftBorder();
-    const isOnCol = this.isOnRightBorder() || this.isOnLowerBorder();
-    return isOnRow || isOnCol;
-  }
+
   hasTouchedItself() {
     const positionList = this.snake.location.slice(0, -1);
     return positionList.some(areCellsSimilar.bind(null, this.snake.head));
@@ -68,7 +59,7 @@ class Game {
     displayScore(this.score);
   }
   isOver() {
-    return this.hasTouchedBorder() || this.hasTouchedItself();
+    return this.hasTouchedBorder(this.snake) || this.hasTouchedItself();
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;
