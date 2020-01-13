@@ -43,10 +43,14 @@ class Game {
       isOnUpperBorder || isOnLowerBorder || isOnLeftBorder || isOnRightBorder
     );
   }
-
   hasTouchedItself() {
     const positionList = this.snake.location.slice(0, -1);
     return positionList.some(areCellsSimilar.bind(null, this.snake.head));
+  }
+  hasTouchGhost() {
+    return this.ghostSnake.location.some(
+      areCellsSimilar.bind(null, this.snake.head)
+    );
   }
   update() {
     this.snake.move();
@@ -59,11 +63,15 @@ class Game {
     displayScore(this.score);
   }
   isOver() {
-    return this.hasTouchedBorder(this.snake) || this.hasTouchedItself();
+    return (
+      this.hasTouchedBorder(this.snake) ||
+      this.hasTouchGhost() ||
+      this.hasTouchedItself()
+    );
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;
-    if (x > 50) {
+    if (x > 80) {
       this.ghostSnake.turnLeft();
     }
   }
