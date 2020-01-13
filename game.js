@@ -1,4 +1,11 @@
 'use strict';
+
+const areCellsSimilar = (cell1, cell2) => {
+  const [cell1X, cell1Y] = cell1;
+  const [cell2X, cell2Y] = cell2;
+  return cell1X == cell2X && cell1Y == cell2Y;
+};
+
 class Game {
   constructor(snake, ghostSnake, food) {
     this.snake = snake;
@@ -8,9 +15,7 @@ class Game {
     this.score = new Score();
   }
   get isFoodIngested() {
-    const [foodX, foodY] = this.food.position;
-    const [snakeX, snakeY] = this.snake.head;
-    return foodX == snakeX && foodY == snakeY;
+    return areCellsSimilar(this.food.position, this.snake.head);
   }
   makeNewFood() {
     const foodColId = Math.floor(Math.random() * NUM_OF_COLS);
@@ -48,7 +53,10 @@ class Game {
     const isOnCol = this.isOnRightBorder() || this.isOnLowerBorder();
     return isOnRow || isOnCol;
   }
-
+  hasTouchedItself() {
+    const positionList = this.snake.location.slice(0, -1);
+    return positionList.some(areCellsSimilar.bind(null, this.snake.head));
+  }
   update() {
     this.snake.move();
     this.ghostSnake.move();
@@ -60,7 +68,7 @@ class Game {
     displayScore(this.score);
   }
   isOver() {
-    return this.hasTouchedBorder();
+    return this.hasTouchedBorder() || this.hasTouchedItself();
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;

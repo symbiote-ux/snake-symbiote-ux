@@ -6,7 +6,9 @@ class Snake {
     this.type = type;
     this.previousTail = [0, 0];
   }
-
+  get location() {
+    return this.positions.slice();
+  }
   get head() {
     const head = this.positions[this.positions.length - 1];
     return head.slice();
