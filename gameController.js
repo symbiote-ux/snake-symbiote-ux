@@ -26,8 +26,7 @@ const createGrids = function() {
 };
 
 const displayScore = score => {
-  const scoreTable = document.getElementById('scoreTab');
-  scoreText.innerText = 'total : ' + score.total;
+  scoreText.innerText = 'Total : ' + score.total;
 };
 
 const drawFood = food => {
@@ -74,60 +73,15 @@ const initializeSetup = game => {
   drawFood(food);
 };
 
-class GameController {
-  constructor(snake, ghostSnake, food) {
-    this.snake = snake;
-    this.ghostSnake = ghostSnake;
-    this.food = food;
-    this.previousFood = new Food(0, 0);
-    this.score = new Score();
-  }
-  get isFoodIngested() {
-    const [foodX, foodY] = this.food.position;
-    const [snakeX, snakeY] = this.snake.head;
-    return foodX == snakeX && foodY == snakeY;
-  }
-  makeNewFood() {
-    const foodColId = Math.floor(Math.random() * NUM_OF_COLS);
-    const foodCellId = Math.floor(Math.random() * NUM_OF_ROWS);
-    this.previousFood = this.food;
-    this.food = new Food(foodColId, foodCellId);
-  }
-  turnSnake() {
-    this.snake.turnLeft();
-  }
-  getDetails() {
-    const details = {};
-    details.snake = this.snake;
-    details.ghostSnake = this.ghostSnake;
-    details.food = this.food;
-    details.previousFood = this.previousFood;
-    return details;
-  }
-  update() {
-    this.snake.move();
-    this.ghostSnake.move();
-    if (this.isFoodIngested) {
-      this.makeNewFood();
-      this.snake.grow();
-      this.score.count(1);
-    }
-    displayScore(this.score);
-  }
-  randomlyTurnSnake() {
-    let x = Math.random() * 100;
-    if (x > 50) {
-      this.ghostSnake.turnLeft();
-    }
-  }
-}
+const animateSnake = snake => {
+  eraseTail(snake);
+  drawSnake(snake);
+};
 
 const drawGame = function(game) {
   const {snake, ghostSnake, food, previousFood} = game.getDetails();
-  eraseTail(snake);
-  drawSnake(snake);
-  eraseTail(ghostSnake);
-  drawSnake(ghostSnake);
+  animateSnake(snake);
+  animateSnake(ghostSnake);
   eraseFood(previousFood);
   drawFood(food);
 };
@@ -155,7 +109,7 @@ const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = new Food(2, 3);
-  const game = new GameController(snake, ghostSnake, food);
+  const game = new Game(snake, ghostSnake, food);
   initializeSetup(game);
 
   setInterval(() => {
