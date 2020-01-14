@@ -1,9 +1,12 @@
 'use strict';
-
 const areCellsSimilar = (cell1, cell2) => {
   const [cell1X, cell1Y] = cell1;
   const [cell2X, cell2Y] = cell2;
   return cell1X == cell2X && cell1Y == cell2Y;
+};
+
+const randomNum = limit => {
+  return Math.floor(Math.random() * (limit - 2));
 };
 
 class Game {
@@ -11,17 +14,20 @@ class Game {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-    this.previousFood = new Food(0, 0);
+    this.previousFood = new Food(0, 0, 'normal');
     this.score = new Score();
   }
   isFoodIngested(snake) {
     return areCellsSimilar(this.food.position, snake.head);
   }
   makeNewFood() {
-    const foodColId = Math.floor(Math.random() * NUM_OF_COLS);
-    const foodCellId = Math.floor(Math.random() * NUM_OF_ROWS);
     this.previousFood = this.food;
-    this.food = new Food(foodColId, foodCellId);
+    const foodType = randomNum(10) > 5 ? 'special' : 'normal';
+    this.food = new Food(
+      randomNum(NUM_OF_COLS),
+      randomNum(NUM_OF_ROWS),
+      foodType
+    );
   }
   turnSnake(dir) {
     if (dir == 'left') {
@@ -31,14 +37,7 @@ class Game {
       this.snake.turnRight();
     }
   }
-  getDetails() {
-    const details = {};
-    details.snake = this.snake.getDetails();
-    details.ghostSnake = this.ghostSnake.getDetails();
-    details.food = this.food.position;
-    details.previousFood = this.previousFood.position;
-    return details;
-  }
+
   hasTouchedBorder(snake) {
     const isOnUpperBorder = snake.isOnRow(-1);
     const isOnLowerBorder = snake.isOnRow(NUM_OF_ROWS);
@@ -61,9 +60,8 @@ class Game {
     this.snake.move();
     this.ghostSnake.move();
     if (this.isFoodIngested(this.snake)) {
+      this.upGradeSnake();
       this.makeNewFood();
-      this.snake.grow();
-      this.score.count(1);
     }
     if (this.isFoodIngested(this.ghostSnake)) {
       this.makeNewFood();
@@ -79,8 +77,16 @@ class Game {
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;
-    if (x > 50) {
+    if (x > 20) {
       this.ghostSnake.turnLeft();
+    }
+  }
+  upGradeSnake() {
+    if (this.food.kind == 'special') {
+      this.score.count(5);
+    } else {
+      this.snake.grow();
+      this.score.count(1);
     }
   }
 }

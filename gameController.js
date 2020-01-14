@@ -31,15 +31,15 @@ const displayScore = score => {
 };
 
 const drawFood = food => {
-  const [colId, cellId] = food;
+  const [colId, cellId] = food.position;
   const cell = getCell(colId, cellId);
-  cell.classList.add('food');
+  cell.classList.add(food.kind);
 };
 
 const eraseFood = food => {
-  const [colId, cellId] = food;
+  const [colId, cellId] = food.position;
   const cell = getCell(colId, cellId);
-  cell.classList.remove('food');
+  cell.classList.remove(food.kind);
 };
 
 const drawSnake = function(snake) {
@@ -50,7 +50,7 @@ const drawSnake = function(snake) {
 };
 
 const eraseTail = function(snake) {
-  let [colId, rowId] = snake.previousTail;
+  let [colId, rowId] = snake.lastTailPosition;
   const cell = getCell(colId, rowId);
   cell.classList.remove(snake.species);
 };
@@ -65,12 +65,11 @@ const attachEventListeners = game => {
 };
 
 const initializeSetup = game => {
-  const {snake, ghostSnake, food} = game.getDetails();
   createGrids();
   attachEventListeners(game);
-  drawSnake(snake);
-  drawSnake(ghostSnake);
-  drawFood(food);
+  drawSnake(game.snake);
+  drawSnake(game.ghostSnake);
+  drawFood(game.food);
 };
 
 const animateSnake = snake => {
@@ -79,11 +78,10 @@ const animateSnake = snake => {
 };
 
 const drawGame = function(game) {
-  const {snake, ghostSnake, food, previousFood} = game.getDetails();
-  animateSnake(snake);
-  animateSnake(ghostSnake);
-  eraseFood(previousFood);
-  drawFood(food);
+  animateSnake(game.snake);
+  animateSnake(game.ghostSnake);
+  eraseFood(game.previousFood);
+  drawFood(game.food);
 };
 
 const initGhostSnake = () => {
@@ -108,7 +106,7 @@ const initSnake = () => {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(42, 40);
+  const food = new Food(42, 40, 'normal');
   const game = new Game(snake, ghostSnake, food);
   initializeSetup(game);
 
@@ -120,6 +118,6 @@ const main = function() {
       return;
     }
     drawGame(game);
-  }, 200);
-  setInterval(() => game.randomlyTurnSnake(), 500);
+  }, 100);
+  setInterval(() => game.randomlyTurnSnake(), 400);
 };

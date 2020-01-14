@@ -10,10 +10,14 @@ class Snake {
     return this.positions.slice();
   }
   get head() {
-    const head = this.positions[this.positions.length - 1];
-    return head.slice();
+    return this.positions[this.positions.length - 1].slice();
   }
-
+  get species() {
+    return this.type;
+  }
+  get lastTailPosition() {
+    return this.previousTail.slice();
+  }
   turnLeft() {
     this.direction.turnLeft();
   }
@@ -27,13 +31,6 @@ class Snake {
     const [deltaX, deltaY] = this.direction.delta;
 
     this.positions.push([headX + deltaX, headY + deltaY]);
-  }
-  getDetails() {
-    const details = {};
-    details.location = this.positions.slice();
-    details.species = this.type;
-    details.previousTail = this.previousTail.slice();
-    return details;
   }
   grow() {
     this.positions.unshift(this.previousTail);

@@ -9,7 +9,7 @@ h1 {
   flex-wrap: wrap;
   background-color: rgba(233, 233, 233, 0.5);
   border: 1px solid rgba(233, 233, 233, 0.5);
-  box-shadow: -1px -1px 6px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: -1px -1px 3px 2px rgba(0, 0, 0, 0.1);
 }
 
 .cell {
@@ -27,8 +27,12 @@ h1 {
   border-radius: 25%;
 }
 
-.food {
-  background-color: red;
+.normal {
+  background-image: radial-gradient(circle, green, yellow, red);
+}
+
+.special {
+  animation: nutrition 2s linear 0s infinite;
 }
 
 #tab {
@@ -39,9 +43,21 @@ h1 {
   height: 30px;
   width: 100px;
   margin-bottom: 10px;
+  background-color: rgba(233, 233, 233, 0.5);
 }
 
 #scoreText {
   margin-top: 2px;
   margin-bottom: 4px;
+}
+
+@keyframes nutrition {
+  0% {
+    border-radius: 50%;
+    background-color: red;
+  }
+  100% {
+    border-radius: 0;
+    background-color: yellow;
+  }
 }
