@@ -93,7 +93,7 @@ const initGhostSnake = () => {
     [42, 30]
   ];
 
-  return new Snake(ghostSnakePos, new Direction(EAST), 'ghost');
+  return new Snake(ghostSnakePos, new Direction(SOUTH), 'ghost');
 };
 
 const initSnake = () => {
@@ -108,7 +108,7 @@ const initSnake = () => {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(2, 3);
+  const food = new Food(42, 40);
   const game = new Game(snake, ghostSnake, food);
   initializeSetup(game);
 

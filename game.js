@@ -14,8 +14,8 @@ class Game {
     this.previousFood = new Food(0, 0);
     this.score = new Score();
   }
-  get isFoodIngested() {
-    return areCellsSimilar(this.food.position, this.snake.head);
+  isFoodIngested(snake) {
+    return areCellsSimilar(this.food.position, snake.head);
   }
   makeNewFood() {
     const foodColId = Math.floor(Math.random() * NUM_OF_COLS);
@@ -55,7 +55,9 @@ class Game {
   update() {
     this.snake.move();
     this.ghostSnake.move();
-    if (this.isFoodIngested) {
+    const hasSnakeEatFood = this.isFoodIngested(this.snake);
+    const hasGhostSnakeEatFood = this.isFoodIngested(this.ghostSnake);
+    if (hasSnakeEatFood || hasGhostSnakeEatFood) {
       this.makeNewFood();
       this.snake.grow();
       this.score.count(1);
@@ -71,7 +73,7 @@ class Game {
   }
   randomlyTurnSnake() {
     let x = Math.random() * 100;
-    if (x > 80) {
+    if (x > 50) {
       this.ghostSnake.turnLeft();
     }
   }
