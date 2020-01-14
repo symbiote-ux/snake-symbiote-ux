@@ -26,38 +26,38 @@ const createGrids = function() {
 };
 
 const displayScore = score => {
-  scoreText.innerText = 'Total : ' + score.total;
+  const scorer = document.getElementById('scoreText');
+  scorer.innerText = 'Total : ' + score.total;
 };
 
 const drawFood = food => {
-  const [colId, cellId] = food.position;
+  const [colId, cellId] = food;
   const cell = getCell(colId, cellId);
   cell.classList.add('food');
 };
 
 const eraseFood = food => {
-  const [colId, cellId] = food.position;
+  const [colId, cellId] = food;
   const cell = getCell(colId, cellId);
   cell.classList.remove('food');
 };
 
 const drawSnake = function(snake) {
-  const details = snake.getDetails();
-  details.location.forEach(([colId, rowId]) => {
+  snake.location.forEach(([colId, rowId]) => {
     const cell = getCell(colId, rowId);
-    cell.classList.add(details.species);
+    cell.classList.add(snake.species);
   });
 };
 
 const eraseTail = function(snake) {
-  const details = snake.getDetails();
-  let [colId, rowId] = details.previousTail;
+  let [colId, rowId] = snake.previousTail;
   const cell = getCell(colId, rowId);
-  cell.classList.remove(details.species);
+  cell.classList.remove(snake.species);
 };
 
 const handleKeyPress = game => {
-  game.turnSnake();
+  const lockSmith = {ArrowLeft: 'left', ArrowRight: 'right'};
+  game.turnSnake(lockSmith[event.key]);
 };
 
 const attachEventListeners = game => {

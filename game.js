@@ -23,15 +23,20 @@ class Game {
     this.previousFood = this.food;
     this.food = new Food(foodColId, foodCellId);
   }
-  turnSnake() {
-    this.snake.turnLeft();
+  turnSnake(dir) {
+    if (dir == 'left') {
+      this.snake.turnLeft();
+    }
+    if (dir == 'right') {
+      this.snake.turnRight();
+    }
   }
   getDetails() {
     const details = {};
-    details.snake = this.snake;
-    details.ghostSnake = this.ghostSnake;
-    details.food = this.food;
-    details.previousFood = this.previousFood;
+    details.snake = this.snake.getDetails();
+    details.ghostSnake = this.ghostSnake.getDetails();
+    details.food = this.food.position;
+    details.previousFood = this.previousFood.position;
     return details;
   }
   hasTouchedBorder(snake) {
@@ -55,12 +60,13 @@ class Game {
   update() {
     this.snake.move();
     this.ghostSnake.move();
-    const hasSnakeEatFood = this.isFoodIngested(this.snake);
-    const hasGhostSnakeEatFood = this.isFoodIngested(this.ghostSnake);
-    if (hasSnakeEatFood || hasGhostSnakeEatFood) {
+    if (this.isFoodIngested(this.snake)) {
       this.makeNewFood();
       this.snake.grow();
       this.score.count(1);
+    }
+    if (this.isFoodIngested(this.ghostSnake)) {
+      this.makeNewFood();
     }
     displayScore(this.score);
   }
