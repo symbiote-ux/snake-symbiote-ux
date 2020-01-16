@@ -37,7 +37,14 @@ class Game {
       this.snake.turnRight();
     }
   }
-
+  get status() {
+    return {
+      snake: this.snake.status(),
+      ghostSnake: this.ghostSnake.status(),
+      food: this.food.status(),
+      previousFood: this.previousFood.status()
+    };
+  }
   hasTouchedBorder(snake) {
     const isOnUpperBorder = snake.isOnRow(-1);
     const isOnLowerBorder = snake.isOnRow(NUM_OF_ROWS);

@@ -11,4 +11,10 @@ class Food {
   get kind() {
     return this.type;
   }
+  status() {
+    return {
+      positions: this.position,
+      kind: this.kind
+    };
+  }
 }

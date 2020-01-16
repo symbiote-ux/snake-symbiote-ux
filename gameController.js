@@ -31,28 +31,32 @@ const displayScore = score => {
 };
 
 const drawFood = food => {
-  const [colId, cellId] = food.position;
-  const cell = getCell(colId, cellId);
-  cell.classList.add(food.kind);
+  const {positions, kind} = food;
+  const [colId, rowId] = positions;
+  const cell = getCell(colId, rowId);
+  cell.classList.add(kind);
 };
 
 const eraseFood = food => {
-  const [colId, cellId] = food.position;
+  const {positions, kind} = food;
+  const [colId, cellId] = positions;
   const cell = getCell(colId, cellId);
-  cell.classList.remove(food.kind);
+  cell.classList.remove(kind);
 };
 
-const drawSnake = function(snake) {
-  snake.location.forEach(([colId, rowId]) => {
+const drawSnake = snake => {
+  const {locations, species} = snake;
+  locations.forEach(([colId, rowId]) => {
     const cell = getCell(colId, rowId);
-    cell.classList.add(snake.species);
+    cell.classList.add(species);
   });
 };
 
 const eraseTail = function(snake) {
-  let [colId, rowId] = snake.lastTailPosition;
+  const {tailLocation, species} = snake;
+  let [colId, rowId] = tailLocation;
   const cell = getCell(colId, rowId);
-  cell.classList.remove(snake.species);
+  cell.classList.remove(species);
 };
 
 const handleKeyPress = game => {
@@ -65,11 +69,12 @@ const attachEventListeners = game => {
 };
 
 const initializeSetup = game => {
+  const {snake, ghostSnake, food} = game.status;
   createGrids();
   attachEventListeners(game);
-  drawSnake(game.snake);
-  drawSnake(game.ghostSnake);
-  drawFood(game.food);
+  drawSnake(snake);
+  drawSnake(ghostSnake);
+  drawFood(food);
 };
 
 const animateSnake = snake => {
@@ -78,10 +83,11 @@ const animateSnake = snake => {
 };
 
 const drawGame = function(game) {
-  animateSnake(game.snake);
-  animateSnake(game.ghostSnake);
-  eraseFood(game.previousFood);
-  drawFood(game.food);
+  const {snake, ghostSnake, food, previousFood} = game.status;
+  animateSnake(snake);
+  animateSnake(ghostSnake);
+  eraseFood(previousFood);
+  drawFood(food);
 };
 
 const initGhostSnake = () => {
@@ -114,7 +120,6 @@ const main = function() {
     game.update();
     if (game.isOver()) {
       clearInterval(interval);
-      alert('Game Over');
       return;
     }
     drawGame(game);

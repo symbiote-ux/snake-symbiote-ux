@@ -18,6 +18,13 @@ class Snake {
   get lastTailPosition() {
     return this.previousTail.slice();
   }
+  status() {
+    return {
+      locations: this.location,
+      species: this.species,
+      tailLocation: this.lastTailPosition
+    };
+  }
   turnLeft() {
     this.direction.turnLeft();
   }
