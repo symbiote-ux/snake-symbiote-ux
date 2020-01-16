@@ -109,6 +109,11 @@ const initSnake = () => {
   return new Snake(snakePosition, new Direction(EAST), 'snake');
 };
 
+const displayMessage = () => {
+  const element = document.querySelector('#msgBox');
+  element.style = 'display:block';
+};
+
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
@@ -120,6 +125,7 @@ const main = function() {
     game.update();
     if (game.isOver()) {
       clearInterval(interval);
+      displayMessage();
       return;
     }
     drawGame(game);

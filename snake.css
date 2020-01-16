@@ -51,6 +51,13 @@ h1 {
   margin-bottom: 4px;
 }
 
+#msgBox {
+  display: none;
+  position: absolute;
+  width: 800px;
+  height: 480px;
+}
+
 @keyframes nutrition {
   0% {
     border-radius: 50%;
